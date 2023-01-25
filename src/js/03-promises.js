@@ -23,21 +23,23 @@ function createPromise(position, delay) {
 
 createPromisesBtn.addEventListener('click', onClick);
 
- async function onClick(e) {
+async function onClick(e) {
   e.preventDefault();
+  let delayValue = 0;
   let firstDelay = Number(refs.delay.value);
   let delayStep = Number(refs.step.value);
   for (let i = 0; i < refs.amount.value; i++) {
     let delay = i === 0 ? firstDelay : delayStep;
+    delayValue += delay;
    await createPromise(1 + i, delay)
-      .then(({ position, delay }) => {
+      .then(({ position}) => {
         Notiflix.Notify.success(
-          `✅ Fulfilled promise ${position} in ${delay}ms`
+          `✅ Fulfilled promise ${position} in ${delayValue}ms`
         );
       })
-      .catch(({ position, delay }) => {
+      .catch(({ position}) => {
         Notiflix.Notify.failure(
-          `❌ Rejected promise ${position} in ${delay}ms`
+          `❌ Rejected promise ${position} in ${delayValue}ms`
         );
       });
   }
